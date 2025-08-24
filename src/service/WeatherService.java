@@ -1,3 +1,5 @@
+package service;
+
 import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
@@ -9,14 +11,14 @@ import java.io.InputStreamReader;
 import org.json.JSONObject;
 import org.json.JSONArray;
 
-public class ActualWeather {
+public class WeatherService {
     private double latitude;
     private double longitude;
     private String currentURL;
     private String currentTime;
     private double currentTemperature;
     private int currentWindSpeed;
-    public ActualWeather(){
+    public WeatherService(){
         String city = getInputCity();
         String urlAddress = createUrl(city);
         String response = getApiResponse(urlAddress);
@@ -35,7 +37,7 @@ public class ActualWeather {
                 + "&daily=temperature_2m_max,windspeed_10m_mean"
                 + "&timezone=Europe/Bratislava";
         System.out.println(currentURL + " current url");
-        fetchCurrentWeather();
+        JSONObject weatherJson = fetchCurrentWeather();
 
         System.out.println("Temperature: " + currentTemperature + " °C");
         System.out.println("Wind speed: " + currentWindSpeed + " km/h");
@@ -62,7 +64,7 @@ public class ActualWeather {
     }
 
     public static void main(String[] args) {
-        ActualWeather actualWeather = new ActualWeather();
+        WeatherService actualWeather = new WeatherService();
     }
     public static String getInputCity(){
         Scanner scanner = new Scanner(System.in);
@@ -120,7 +122,7 @@ public class ActualWeather {
         return new double[]{latitude, longitude};
     }
 
-    public void fetchCurrentWeather() {
+    public JSONObject fetchCurrentWeather() {
         String weatherResponse = getApiResponse(this.currentURL);
 
         JSONObject weatherJson = new JSONObject(weatherResponse);
@@ -129,6 +131,8 @@ public class ActualWeather {
         this.currentTemperature = currentWeather.getDouble("temperature");
         this.currentWindSpeed = currentWeather.getInt("windspeed");
         this.currentTime = currentWeather.getString("time");
+
+        return weatherJson;
     }
 
 

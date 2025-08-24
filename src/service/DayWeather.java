@@ -1,3 +1,5 @@
+package service;
+
 public class DayWeather {
     private String date;
     private double maxTemperature;
