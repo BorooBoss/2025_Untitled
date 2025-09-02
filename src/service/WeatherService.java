@@ -16,10 +16,10 @@ public class WeatherService {
     private double longitude;
     private String currentURL;
     private String currentTime;
+    private List<DayWeather> forecast;
     private double currentTemperature;
     private int currentWindSpeed;
-    public WeatherService(){
-        String city = getInputCity();
+    public WeatherService(String city){
         String urlAddress = createUrl(city);
         String response = getApiResponse(urlAddress);
         //System.out.println("API Response: ");
@@ -47,7 +47,7 @@ public class WeatherService {
         JSONArray temps = weatherJson.getJSONObject("daily").getJSONArray("temperature_2m_max");
         JSONArray winds = weatherJson.getJSONObject("daily").getJSONArray("windspeed_10m_mean");
 
-        List<DayWeather> forecast = new ArrayList<>();
+        this.forecast = new ArrayList<>();
         for (int i = 0; i < dates.length(); i++) {
             forecast.add(new DayWeather(
                     dates.getString(i),
@@ -62,9 +62,16 @@ public class WeatherService {
 
 
     }
+    public List<DayWeather> getForecast(){
+        return this.forecast;
+    }
+    public double getCurrentTemperature() { return currentTemperature; }
+    public int getCurrentWindSpeed() { return currentWindSpeed; }
+    public String getCurrentTime() { return currentTime; }
+
 
     public static void main(String[] args) {
-        WeatherService actualWeather = new WeatherService();
+       // WeatherService actualWeather = new WeatherService(city);
     }
     public static String getInputCity(){
         Scanner scanner = new Scanner(System.in);
