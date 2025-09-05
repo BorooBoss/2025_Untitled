@@ -4,11 +4,13 @@ public class DayWeather {
     private String date;
     private double maxTemperature;
     private double avgWindSpeed;
+    private int weatherCode;
 
-    public DayWeather(String date, double maxTemperature, double avgWindSpeed) {
+    public DayWeather(String date, double maxTemperature, double avgWindSpeed, int weatherCode) {
         this.date = date;
         this.maxTemperature = maxTemperature;
         this.avgWindSpeed = avgWindSpeed;
+        this.weatherCode = weatherCode;
     }
 
     public String getDate() {
@@ -22,6 +24,8 @@ public class DayWeather {
     public double getAvgWindSpeed() {
         return avgWindSpeed;
     }
+
+    public int getWeatherCode() { return weatherCode; }
 
     @Override
     public String toString() {

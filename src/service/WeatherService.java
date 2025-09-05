@@ -15,10 +15,12 @@ public class WeatherService {
     private double latitude;
     private double longitude;
     private String currentURL;
+
     private String currentTime;
     private List<DayWeather> forecast;
     private double currentTemperature;
     private int currentWindSpeed;
+    private int weathercode;
     public WeatherService(String city){
         String urlAddress = createUrl(city);
         String response = getApiResponse(urlAddress);
@@ -30,12 +32,14 @@ public class WeatherService {
         this.latitude = coords[0]; this.longitude = coords[1];
         System.out.println("Latitude: " + latitude);
         System.out.println("Longitude: " + longitude);
+
         this.currentURL = "https://api.open-meteo.com/v1/forecast?latitude="
                 + latitude
                 + "&longitude=" + longitude
                 + "&current_weather=true"
-                + "&daily=temperature_2m_max,windspeed_10m_mean"
+                + "&daily=temperature_2m_max,windspeed_10m_mean,weathercode"
                 + "&timezone=Europe/Bratislava";
+
         System.out.println(currentURL + " current url");
         JSONObject weatherJson = fetchCurrentWeather();
 
@@ -46,13 +50,14 @@ public class WeatherService {
         JSONArray dates = weatherJson.getJSONObject("daily").getJSONArray("time");
         JSONArray temps = weatherJson.getJSONObject("daily").getJSONArray("temperature_2m_max");
         JSONArray winds = weatherJson.getJSONObject("daily").getJSONArray("windspeed_10m_mean");
-
+        JSONArray wcodes = weatherJson.getJSONObject("daily").getJSONArray("weathercode");
         this.forecast = new ArrayList<>();
         for (int i = 0; i < dates.length(); i++) {
             forecast.add(new DayWeather(
                     dates.getString(i),
                     temps.getDouble(i),
-                    winds.getDouble(i)
+                    winds.getDouble(i),
+                    wcodes.getInt(i)     // tu pridáš weathercode
             ));
         }
 
@@ -68,6 +73,8 @@ public class WeatherService {
     public double getCurrentTemperature() { return currentTemperature; }
     public int getCurrentWindSpeed() { return currentWindSpeed; }
     public String getCurrentTime() { return currentTime; }
+    public int getCurrentWeatherCode() { return weathercode; }
+
 
 
     public static void main(String[] args) {
@@ -138,6 +145,7 @@ public class WeatherService {
         this.currentTemperature = currentWeather.getDouble("temperature");
         this.currentWindSpeed = currentWeather.getInt("windspeed");
         this.currentTime = currentWeather.getString("time");
+        this.weathercode = currentWeather.getInt("weathercode");
 
         return weatherJson;
     }
