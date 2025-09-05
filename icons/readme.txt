@@ -1,0 +1,1 @@
+Thanks to Freepik & iconixar on flaticon for making these icons <3
