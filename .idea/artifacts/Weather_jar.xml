@@ -1,0 +1,9 @@
+<component name="ArtifactManager">
+  <artifact type="jar" build-on-make="true" name="Weather:jar">
+    <output-path>$PROJECT_DIR$/out/artifacts/Weather_jar</output-path>
+    <root id="archive" name="Weather.jar">
+      <element id="module-output" name="Weather" />
+      <element id="extracted-dir" path="$PROJECT_DIR$/libraries/json-20250517.jar" path-in-jar="/" />
+    </root>
+  </artifact>
+</component>
